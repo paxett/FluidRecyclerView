@@ -12,5 +12,6 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView : RecyclerView = findViewById(R.id.recycler)
         recyclerView.layoutManager = GridLayoutManager(this, 2)
+        recyclerView.adapter = RvAdapter(this)
     }
 }
