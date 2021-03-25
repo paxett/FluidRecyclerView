@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class RvAdapter(context: Context) : RecyclerView.Adapter<ItemViewHolder>() {
-    val numbers: List<Int> = listOf(1,2,3,4,5,6)
+    var numbers: List<Int> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -17,7 +17,5 @@ class RvAdapter(context: Context) : RecyclerView.Adapter<ItemViewHolder>() {
         holder.bind(numbers.get(position))
     }
 
-    override fun getItemCount(): Int {
-        return numbers.size
-    }
+    override fun getItemCount(): Int = numbers.size
 }

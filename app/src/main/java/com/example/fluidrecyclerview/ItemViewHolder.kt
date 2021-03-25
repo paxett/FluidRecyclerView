@@ -9,5 +9,4 @@ class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     fun bind(number: Int) {
         number_tv.text = number.toString()
     }
-
 }
