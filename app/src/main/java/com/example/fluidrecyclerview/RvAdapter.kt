@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class RvAdapter : RecyclerView.Adapter<ItemViewHolder>() {
+class RvAdapter(itemViewModel: ItemViewModel) : RecyclerView.Adapter<ItemViewHolder>() {
     var numbers: List<Int> = listOf()
+    val itemViewModel = itemViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -13,7 +14,10 @@ class RvAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(numbers.get(position))
+        holder.number_tv.text = numbers.get(position).toString()
+        holder.delete_btn.setOnClickListener {
+            itemViewModel.deleteItem(numbers.get(position))
+        }
     }
 
     override fun getItemCount(): Int = numbers.size

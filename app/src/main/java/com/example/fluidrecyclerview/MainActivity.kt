@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
 
         val itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
-        val rvAdapter = RvAdapter()
+        val rvAdapter = RvAdapter(itemViewModel)
         initObserver(rvAdapter, itemViewModel)
 
         this.findViewById<RecyclerView>(R.id.recycler).apply {

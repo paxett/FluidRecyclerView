@@ -21,18 +21,28 @@ class ItemViewModel : ViewModel() {
         generateItems()
     }
 
-    fun generateItems() {
+    private fun generateItems() {
         _itemLiveData.postValue(itemList)
         viewModelScope.launch(exceptionHandler) {
             withContext(Dispatchers.Default) {
                 while (true) {
-                    itemList.add(++counter)
+                    if(removedItems.isEmpty()) {
+                        itemList.add(++counter)
+                    } else {
+                        itemList.add(removedItems.removeLast())
+                    }
                     _itemLiveData.postValue(itemList.toList())
                     Log.d(TAG, itemList.toString())
                     Thread.sleep(5000)
                 }
             }
         }
+    }
+
+    fun deleteItem(item: Int) {
+        itemList.remove(item)
+        _itemLiveData.postValue(itemList.toList())
+        removedItems.add(item)
     }
 
     companion object {
