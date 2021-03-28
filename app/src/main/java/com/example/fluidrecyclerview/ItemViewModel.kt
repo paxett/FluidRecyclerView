@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import kotlin.concurrent.thread
 
 class ItemViewModel : ViewModel() {
     private val _itemLiveData = MutableLiveData<List<Int>>()
@@ -13,20 +13,24 @@ class ItemViewModel : ViewModel() {
 
     private val TAG = ItemViewModel::class.java.simpleName
 
-    val coroutineScope = CoroutineScope(Job() + Dispatchers.IO)
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         Log.e(TAG, "Coroutine exception:${throwable.localizedMessage}", throwable)
     }
 
+    init {
+        generateItems()
+    }
+
     fun generateItems() {
         _itemLiveData.postValue(itemList)
-        coroutineScope.launch(exceptionHandler) {
-            var count = 0
-            while (true) {
-                Thread.sleep(5000)
-                itemList.add(++count)
-                _itemLiveData.postValue(itemList.toList())
-                Log.d(TAG, itemList.toString())
+        viewModelScope.launch(exceptionHandler) {
+            withContext(Dispatchers.Default) {
+                while (true) {
+                    itemList.add(++counter)
+                    _itemLiveData.postValue(itemList.toList())
+                    Log.d(TAG, itemList.toString())
+                    Thread.sleep(5000)
+                }
             }
         }
     }
@@ -34,5 +38,6 @@ class ItemViewModel : ViewModel() {
     companion object {
         var itemList: MutableList<Int> = mutableListOf()
         val removedItems: MutableList<Int> = mutableListOf()
+        var counter = 0
     }
 }

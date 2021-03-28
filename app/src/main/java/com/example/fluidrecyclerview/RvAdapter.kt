@@ -1,11 +1,10 @@
 package com.example.fluidrecyclerview
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class RvAdapter(context: Context) : RecyclerView.Adapter<ItemViewHolder>() {
+class RvAdapter : RecyclerView.Adapter<ItemViewHolder>() {
     var numbers: List<Int> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

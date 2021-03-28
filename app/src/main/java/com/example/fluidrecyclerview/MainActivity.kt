@@ -2,30 +2,27 @@ package com.example.fluidrecyclerview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-    val itemViewModel : ItemViewModel = ItemViewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val recyclerView: RecyclerView = findViewById(R.id.recycler)
-        val rvAdapter = RvAdapter(this)
-        recyclerView.layoutManager = GridLayoutManager(this, 2)
-        recyclerView.adapter = rvAdapter
+        val itemViewModel = ViewModelProvider(this).get(ItemViewModel::class.java)
 
-        initObserver(rvAdapter)
-        generateItems()
+        val rvAdapter = RvAdapter()
+        initObserver(rvAdapter, itemViewModel)
+
+        this.findViewById<RecyclerView>(R.id.recycler).apply {
+            adapter = rvAdapter
+            layoutManager = GridLayoutManager(this.context, 2)
+        }
     }
 
-    private fun generateItems() {
-        itemViewModel.generateItems()
-    }
-
-    private fun initObserver(rvAdapter: RvAdapter) {
+    private fun initObserver(rvAdapter: RvAdapter, itemViewModel: ItemViewModel) {
         itemViewModel.itemLiveData.observe(this, { itemList ->
             itemList?.run {
                 rvAdapter.numbers = itemList
